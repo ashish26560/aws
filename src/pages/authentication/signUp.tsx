@@ -5,6 +5,7 @@ import { ISignUpForm } from '../../models/authentication/signUp';
 import { signUpFromState } from '../../initialFormState';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { LOCALSTORAGE_KEYS, setLocalStorage } from '../../storage';
 
 const SignUp: React.FC = () => {
     const [formState, setFormState] = useState<ISignUpForm>(signUpFromState);
@@ -19,14 +20,16 @@ const SignUp: React.FC = () => {
         e.preventDefault();
 
         try {
-            await Auth.signUp({
+            const { user } = await Auth.signUp({
                 username: formState.email,
                 password: formState.password,
+                autoSignIn: { enabled: true },
             });
+            setLocalStorage(LOCALSTORAGE_KEYS.USERNAME, JSON.stringify(formState.email));
             toast.success('User created');
             navigate('/verify-email');
         } catch (error) {
-            toast.error('Error creating user in:');
+            toast.error(`Error creating user in: ${error}`);
         }
     };
 
@@ -34,15 +37,6 @@ const SignUp: React.FC = () => {
         <Container maxWidth="xs">
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
-                {/* <TextField
-                    label="User name"
-                    type="text"
-                    name="username"
-                    value={formState.username}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                /> */}
                 <TextField
                     label="Email"
                     type="email"

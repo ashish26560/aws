@@ -5,23 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { verifyEmailFromState } from '../../initialFormState';
 import { IVerifyEmailForm } from '../../models/authentication/verifyEmail';
 import { IUserAmplifyResponse } from '../../models/amplifyModels/userAmplify';
+import { LOCALSTORAGE_KEYS, getLocalStorage } from '../../storage';
 
 const VerifyEmail: React.FC = () => {
     const navigate = useNavigate();
     const [formState, setFormState] = useState<IVerifyEmailForm>(verifyEmailFromState);
-
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            try {
-                const user: IUserAmplifyResponse = await Auth.currentUserInfo();
-                setFormState((prevState) => ({ ...prevState, username: user.attributes.email }));
-            } catch (error) {
-                console.log('Error getting user', error);
-            }
-        };
-
-        fetchUserInfo();
-    }, []);
+    const username = JSON.parse(getLocalStorage(LOCALSTORAGE_KEYS.USERNAME) as string);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -32,11 +21,20 @@ const VerifyEmail: React.FC = () => {
         e.preventDefault();
 
         try {
-            await Auth.confirmSignUp(formState.username, formState.code);
+            await Auth.confirmSignUp(username, formState.code);
             console.log('User logged in');
-            navigate('/dashboard');
+            navigate('/setUpTOTP');
         } catch (error) {
             console.log('Error signing in:', error);
+        }
+    };
+
+    const resendConfirmationCode = async () => {
+        try {
+            await Auth.resendSignUp(username);
+            console.log('code resent successfully');
+        } catch (error) {
+            console.log('error resending code: ', error);
         }
     };
 
@@ -58,6 +56,9 @@ const VerifyEmail: React.FC = () => {
                 />
                 <Button variant="contained" type="submit" fullWidth>
                     Submit
+                </Button>
+                <Button variant="text" fullWidth onClick={resendConfirmationCode}>
+                    Resend code
                 </Button>
             </form>
         </Container>

@@ -58,7 +58,7 @@ const SignUp: React.FC = () => {
                 <Button variant="contained" type="submit" fullWidth>
                     Sign Up
                 </Button>
-                <Button variant="text" type="submit" fullWidth onClick={() => navigate('/')}>
+                <Button variant="text" type="submit" fullWidth onClick={() => navigate('/sign-in')}>
                     Sign in
                 </Button>
             </form>

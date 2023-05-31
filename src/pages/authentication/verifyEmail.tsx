@@ -1,15 +1,14 @@
 import { Button, Container, TextField, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { verifyEmailFromState } from '../../initialFormState';
-import { IVerifyEmailForm } from '../../models/authentication/verifyEmail';
-import { IUserAmplifyResponse } from '../../models/amplifyModels/userAmplify';
+import { inputCodeFromState } from '../../initialFormState';
+import { IInputCodeForm } from '../../models/authentication/inputCode';
 import { LOCALSTORAGE_KEYS, getLocalStorage } from '../../storage';
 
 const VerifyEmail: React.FC = () => {
     const navigate = useNavigate();
-    const [formState, setFormState] = useState<IVerifyEmailForm>(verifyEmailFromState);
+    const [formState, setFormState] = useState<IInputCodeForm>(inputCodeFromState);
     const username = JSON.parse(getLocalStorage(LOCALSTORAGE_KEYS.USERNAME) as string);
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +42,7 @@ const VerifyEmail: React.FC = () => {
             <h1>Verify email</h1>
             <form onSubmit={handleSubmit}>
                 <Typography>
-                    we have sent you a verification code to your email. please enter here verification code.
+                    We have sent you a verification code to your email. please enter here verification code.
                 </Typography>
                 <TextField
                     label="Code"

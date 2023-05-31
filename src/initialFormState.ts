@@ -1,6 +1,7 @@
 import { ISignInForm } from './models/authentication/signIn';
 import { ISignUpForm } from './models/authentication/signUp';
-import { IVerifyEmailForm } from './models/authentication/verifyEmail';
+import { IInputCodeForm } from './models/authentication/inputCode';
+import { IForgotPasswordForm } from './models/authentication/forgotPassword';
 
 export const signInFromState: ISignInForm = {
     email: '',
@@ -13,7 +14,12 @@ export const signUpFromState: ISignUpForm = {
     password: '',
 };
 
-export const verifyEmailFromState: IVerifyEmailForm = {
+export const inputCodeFromState: IInputCodeForm = {
+    code: '',
+};
+
+export const forgotPasswordFormState: IForgotPasswordForm = {
     username: '',
     code: '',
+    newPassword: '',
 };

@@ -1,18 +1,23 @@
-import { Button, Container, TextField } from '@mui/material';
+import { Button, Container, TextField, Grid, Link, IconButton } from '@mui/material';
 import { Auth } from 'aws-amplify';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import { ISignInForm } from '../../models/authentication/signIn';
 import { useNavigate } from 'react-router-dom';
-import { signInFromState, verifyEmailFromState } from '../../initialFormState';
+import { signInFromState, inputCodeFromState } from '../../initialFormState';
 import { toast } from 'react-toastify';
-import { IVerifyEmailForm } from '../../models/authentication/verifyEmail';
+import { IInputCodeForm } from '../../models/authentication/inputCode';
+import { UserContext } from '../../context/user-context/userContext';
+import { IUserContext } from '../../models/user-context';
+import { CognitoHostedUIIdentityProvider } from '../../constant';
+
+import { Google } from '@mui/icons-material';
 
 const SignIn: React.FC = () => {
     const [formState, setFormState] = useState<ISignInForm>(signInFromState);
-    const [user, setUser] = useState();
-    const [mfaState, setMFAState] = useState<IVerifyEmailForm>(verifyEmailFromState);
+    const [mfaState, setMFAState] = useState<IInputCodeForm>(inputCodeFromState);
     const [isSoftwareTokenMFA, setIsSoftwareTokenMFA] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { setContextUser, contextUser } = useContext(UserContext) as IUserContext;
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -24,23 +29,36 @@ const SignIn: React.FC = () => {
         setMFAState((prevState) => ({ ...prevState, [name]: value }));
     };
 
+    // Function to handle federated sign-in using Google
+    const signInWithGoogle = async () => {
+        try {
+            await Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google });
+        } catch (error) {
+            console.log('Error signing in with Google:', error);
+        }
+    };
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
             const user = await Auth.signIn(formState.email, formState.password);
-            setUser(user);
+            setContextUser(user);
             if (user.challengeName === 'SOFTWARE_TOKEN_MFA') {
                 setIsSoftwareTokenMFA(true);
             } else if (user.challengeName === 'MFA_SETUP') {
-                // This happens when the MFA method is TOTP
-                // The user needs to setup the TOTP before using it
-                // More info please check the Enabling MFA part
                 await Auth.setupTOTP(user);
-                navigate('/dashboard');
+                navigate('/');
+            } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+                //TODO: add a new screen from user can set new Password. and use below Api.
+                // await Auth.completeNewPassword(
+                //     user, // the Cognito User Object
+                //     newPassword, // the new password
+                // );
+            } else {
+                navigate('/');
             }
         } catch (err: any) {
-            console.log(err.message);
             toast.error(err.message);
         }
     };
@@ -49,12 +67,9 @@ const SignIn: React.FC = () => {
         e.preventDefault();
 
         try {
-            const loggedUser = await Auth.confirmSignIn(
-                user, // Return object from Auth.signIn()
-                mfaState.code, // Confirmation code
-                'SOFTWARE_TOKEN_MFA', // MFA Type e.g. SMS_MFA, SOFTWARE_TOKEN_MFA
-            );
-            navigate('/dashboard');
+            const loggedUser = await Auth.confirmSignIn(contextUser, mfaState.code, 'SOFTWARE_TOKEN_MFA');
+            setContextUser(loggedUser);
+            navigate('/');
         } catch (err: any) {
             toast.error(err.message);
         }
@@ -102,12 +117,41 @@ const SignIn: React.FC = () => {
                             fullWidth
                             margin="normal"
                         />
-                        <Button variant="contained" type="submit" fullWidth>
-                            Sign In
-                        </Button>
-                        <Button variant="text" onClick={() => navigate('/sign-up')}>
-                            Create Account ?
-                        </Button>
+                        <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
+                            <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
+                                <Link component="button" variant="body2" onClick={() => navigate('/forgot-password')}>
+                                    Forgot Password?
+                                </Link>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button variant="contained" type="submit" fullWidth>
+                                    Sign In
+                                </Button>
+                                <IconButton
+                                    size="large"
+                                    edge="start"
+                                    color="inherit"
+                                    aria-label="menu"
+                                    sx={{ mr: 2 }}
+                                    onClick={signInWithGoogle}
+                                >
+                                    <Google />
+                                </IconButton>
+                            </Grid>
+                            <Grid
+                                item
+                                xs={12}
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                Don&apos;t have an account?
+                                <Link component="button" variant="body2" onClick={() => navigate('/sign-up')}>
+                                    Sign Up
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Container>
             )}

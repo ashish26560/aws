@@ -1,4 +1,4 @@
-import { Button, Container, TextField, Grid, Link, IconButton } from '@mui/material';
+import { Button, Container, TextField, Grid, Link, IconButton, Typography } from '@mui/material';
 import { Auth } from 'aws-amplify';
 import React, { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import { ISignInForm } from '../../models/authentication/signIn';
@@ -9,8 +9,7 @@ import { IInputCodeForm } from '../../models/authentication/inputCode';
 import { UserContext } from '../../context/user-context/userContext';
 import { IUserContext } from '../../models/user-context';
 import { CognitoHostedUIIdentityProvider } from '../../constant';
-
-import { Google } from '@mui/icons-material';
+import { Google, Apple, Facebook } from '@mui/icons-material';
 
 const SignIn: React.FC = () => {
     const [formState, setFormState] = useState<ISignInForm>(signInFromState);
@@ -29,7 +28,6 @@ const SignIn: React.FC = () => {
         setMFAState((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    // Function to handle federated sign-in using Google
     const signInWithGoogle = async () => {
         try {
             await Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google });
@@ -127,15 +125,19 @@ const SignIn: React.FC = () => {
                                 <Button variant="contained" type="submit" fullWidth>
                                     Sign In
                                 </Button>
-                                <IconButton
-                                    size="large"
-                                    edge="start"
-                                    color="inherit"
-                                    aria-label="menu"
-                                    sx={{ mr: 2 }}
-                                    onClick={signInWithGoogle}
-                                >
+                            </Grid>
+                            <Grid item xs={12} display="flex" justifyContent="center">
+                                <Typography variant="caption">---OR sign in with---</Typography>
+                            </Grid>
+                            <Grid item xs={12} display="flex" justifyContent="center">
+                                <IconButton size="large" color="inherit" aria-label="menu" onClick={signInWithGoogle}>
                                     <Google />
+                                </IconButton>
+                                <IconButton size="large" color="inherit" aria-label="menu">
+                                    <Apple />
+                                </IconButton>
+                                <IconButton size="large" color="inherit" aria-label="menu">
+                                    <Facebook />
                                 </IconButton>
                             </Grid>
                             <Grid

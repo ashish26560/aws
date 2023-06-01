@@ -92,6 +92,17 @@ const Profile: React.FC = () => {
             });
     }
 
+    async function deleteUser() {
+        await Auth.deleteUser()
+            .then(() => {
+                toast.success('User deleted successfully');
+                navigate('/');
+            })
+            .catch((e) => {
+                toast.error(e.message);
+            });
+    }
+
     return (
         <Container maxWidth="md">
             <Typography variant="h5">Profile Page</Typography>
@@ -210,6 +221,30 @@ const Profile: React.FC = () => {
                             </Button>
                         </Grid>
                         {showConfigureMFA ? <SetupTOTP /> : null}
+                    </Grid>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+                    <Typography variant="h6">Delete user</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Grid
+                        container
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Grid item xs={6}>
+                            <Typography variant="h6">Are you sure you want to delete user?</Typography>
+                        </Grid>
+
+                        <Grid item>
+                            <Button variant="contained" type="submit" onClick={deleteUser}>
+                                Delete
+                            </Button>
+                        </Grid>
                     </Grid>
                 </AccordionDetails>
             </Accordion>

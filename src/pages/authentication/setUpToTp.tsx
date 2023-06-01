@@ -5,7 +5,6 @@ import QRCodeCanvas from 'qrcode.react';
 import { useNavigate } from 'react-router-dom';
 import { inputCodeFromState } from '../../initialFormState';
 import { IInputCodeForm } from '../../models/authentication/inputCode';
-import { LOCALSTORAGE_KEYS, getLocalStorage } from '../../storage';
 import { UserContext } from '../../context/user-context/userContext';
 import { IUserContext } from '../../models/user-context';
 import { toast } from 'react-toastify';
@@ -13,7 +12,6 @@ import { toast } from 'react-toastify';
 const SetupTOTP: React.FC = () => {
     const [formState, setFormState] = useState<IInputCodeForm>(inputCodeFromState);
     const [qrCode, setQRCode] = useState<string>('');
-    // const username = JSON.parse(getLocalStorage(LOCALSTORAGE_KEYS.USERNAME) as string);
     const navigate = useNavigate();
     const { contextUser } = useContext(UserContext) as IUserContext;
 

@@ -117,7 +117,7 @@ const SignIn: React.FC = () => {
                         />
                         <Grid container justifyContent="space-between" alignItems="center" spacing={2}>
                             <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
-                                <Link component="button" variant="body2" onClick={() => navigate('/forgot-password')}>
+                                <Link variant="body2" onClick={() => navigate('/forgot-password')}>
                                     Forgot Password?
                                 </Link>
                             </Grid>
@@ -149,7 +149,7 @@ const SignIn: React.FC = () => {
                                 }}
                             >
                                 Don&apos;t have an account?
-                                <Link component="button" variant="body2" onClick={() => navigate('/sign-up')}>
+                                <Link variant="body2" onClick={() => navigate('/sign-up')}>
                                     Sign Up
                                 </Link>
                             </Grid>

@@ -30,8 +30,7 @@ const Profile: React.FC = () => {
                 setIsMFAEnabled(true);
             }
         } catch (error) {
-            console.log('Error changing password:', error);
-            // Handle error
+            console.log(error);
         }
     };
 

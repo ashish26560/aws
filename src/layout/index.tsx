@@ -52,7 +52,7 @@ export default function Layout({ children }: ILayoutProps) {
                             {contextUser ? (
                                 <>
                                     <Button color="inherit" onClick={() => navigate('/profile')}>
-                                        {(contextUser as any)?.attributes?.email}
+                                        {(contextUser as any)?.signInUserSession.idToken.payload.email}
                                     </Button>
                                     <Button color="inherit" onClick={() => signOut()}>
                                         Sign Out

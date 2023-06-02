@@ -22,10 +22,7 @@ const SetupTOTP: React.FC = () => {
     const setupTOTP = async () => {
         const username = (contextUser as any)?.attributes?.email;
         try {
-            // const user = await Auth.currentAuthenticatedUser();
             const code = await Auth.setupTOTP(contextUser);
-            // You can directly display the `code` to the user or convert it to a QR code to be scanned.
-            // E.g., use following code sample to render a QR code with `qrcode.react` component:
             const str = 'otpauth://totp/AWSCognito:' + username + '?secret=' + code + '&issuer=' + username;
             setQRCode(str);
         } catch (error) {

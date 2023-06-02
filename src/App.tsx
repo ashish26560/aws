@@ -6,7 +6,6 @@ import SignIn from './pages/authentication/signIn';
 import SignUp from './pages/authentication/signUp';
 import VerifyEmail from './pages/authentication/verifyEmail';
 import 'react-toastify/dist/ReactToastify.css';
-import SetupTOTP from './pages/authentication/setupToTp';
 import { Hub } from 'aws-amplify';
 import { UserContext } from './context/user-context/userContext';
 import { IUserContext } from './models/user-context';
@@ -14,6 +13,7 @@ import HomePage from './pages/home/homePage';
 import Layout from './layout';
 import ForgotPassword from './pages/authentication/forgotPassword';
 import CreateUser from './pages/admin/createUser';
+import SetupTOTP from './pages/authentication/setupToTp';
 
 export default function App() {
     const { setContextUser } = useContext(UserContext) as IUserContext;

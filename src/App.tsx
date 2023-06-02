@@ -6,7 +6,7 @@ import SignIn from './pages/authentication/signIn';
 import SignUp from './pages/authentication/signUp';
 import VerifyEmail from './pages/authentication/verifyEmail';
 import 'react-toastify/dist/ReactToastify.css';
-import SetupTOTP from './pages/authentication/setUpToTp';
+import SetupTOTP from './pages/authentication/setupToTp';
 import { Hub } from 'aws-amplify';
 import { UserContext } from './context/user-context/userContext';
 import { IUserContext } from './models/user-context';

@@ -12,13 +12,13 @@ import { CognitoHostedUIIdentityProvider } from '../../constant';
 import { Google, Apple, Facebook } from '@mui/icons-material';
 
 const SignIn: React.FC = () => {
+    const navigate = useNavigate();
     const [formState, setFormState] = useState<ISignInForm>(signInFromState);
     const [mfaState, setMFAState] = useState<IInputCodeForm>(inputCodeFromState);
     const [newPassword, setNewPassword] = useState<IInputCodeForm>(inputCodeFromState);
     const [isSoftwareTokenMFA, setIsSoftwareTokenMFA] = useState<boolean>(false);
     const [showNewPasswordForm, setShowNewPasswordForm] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const { setContextUser, contextUser } = useContext(UserContext) as IUserContext;
+    const { setContextUser, contextUser, updateContextUser } = useContext(UserContext) as IUserContext;
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -81,6 +81,7 @@ const SignIn: React.FC = () => {
 
         try {
             await Auth.completeNewPassword(contextUser, newPassword.code);
+            await updateContextUser();
             navigate('/');
         } catch (err: any) {
             toast.error(err.message);

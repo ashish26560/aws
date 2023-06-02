@@ -13,7 +13,7 @@ const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider({
 export async function createUser(
     username: string,
     temporaryPassword: string,
-    // userAttributes: { Name: string; Value: string }[],
+    userAttributes: { Name: string; Value: string }[],
 ): Promise<CognitoIdentityServiceProvider.AdminCreateUserResponse> {
     try {
         // Call the AdminCreateUser API
@@ -22,7 +22,7 @@ export async function createUser(
                 UserPoolId: process.env.REACT_APP_AWS_USER_POOLS_ID as string,
                 Username: username,
                 TemporaryPassword: temporaryPassword,
-                // UserAttributes: userAttributes,
+                UserAttributes: userAttributes,
             })
             .promise();
 

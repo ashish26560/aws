@@ -19,7 +19,7 @@ const CreateUser: React.FC = () => {
         e.preventDefault();
 
         try {
-            await createUser(formState.email, formState.password);
+            await createUser(formState.email, formState.password, [{ Name: 'email', Value: formState.email }]);
             toast.success('User created');
             navigate('/');
         } catch (error) {

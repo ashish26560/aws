@@ -14,7 +14,9 @@ import { Google, Apple, Facebook } from '@mui/icons-material';
 const SignIn: React.FC = () => {
     const [formState, setFormState] = useState<ISignInForm>(signInFromState);
     const [mfaState, setMFAState] = useState<IInputCodeForm>(inputCodeFromState);
+    const [newPassword, setNewPassword] = useState<IInputCodeForm>(inputCodeFromState);
     const [isSoftwareTokenMFA, setIsSoftwareTokenMFA] = useState<boolean>(false);
+    const [showNewPasswordForm, setShowNewPasswordForm] = useState<boolean>(false);
     const navigate = useNavigate();
     const { setContextUser, contextUser } = useContext(UserContext) as IUserContext;
 
@@ -26,6 +28,11 @@ const SignIn: React.FC = () => {
     const handleMfaInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setMFAState((prevState) => ({ ...prevState, [name]: value }));
+    };
+
+    const handleNewPassword = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setNewPassword((prevState) => ({ ...prevState, [name]: value }));
     };
 
     const signInWithGoogle = async () => {
@@ -48,11 +55,7 @@ const SignIn: React.FC = () => {
                 await Auth.setupTOTP(user);
                 navigate('/');
             } else if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                //TODO: add a new screen from user can set new Password. and use below Api.
-                // await Auth.completeNewPassword(
-                //     user, // the Cognito User Object
-                //     newPassword, // the new password
-                // );
+                setShowNewPasswordForm(true);
             } else {
                 navigate('/');
             }
@@ -73,9 +76,20 @@ const SignIn: React.FC = () => {
         }
     };
 
+    const handleSubmitNewPassword = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            await Auth.completeNewPassword(contextUser, newPassword.code);
+            navigate('/');
+        } catch (err: any) {
+            toast.error(err.message);
+        }
+    };
+
     return (
         <>
-            {isSoftwareTokenMFA ? (
+            {isSoftwareTokenMFA && (
                 <Container maxWidth="xs">
                     <h1>Add MFA code</h1>
                     <form onSubmit={handleMFA}>
@@ -93,7 +107,8 @@ const SignIn: React.FC = () => {
                         </Button>
                     </form>
                 </Container>
-            ) : (
+            )}
+            {!isSoftwareTokenMFA && !showNewPasswordForm && (
                 <Container maxWidth="xs">
                     <h1>Sign In</h1>
                     <form onSubmit={handleSubmit}>
@@ -154,6 +169,26 @@ const SignIn: React.FC = () => {
                                 </Link>
                             </Grid>
                         </Grid>
+                    </form>
+                </Container>
+            )}
+            {showNewPasswordForm && (
+                <Container maxWidth="xs">
+                    <h1>Create new password</h1>
+                    <Typography>Previous password was temperately assigned to you, please create a new one.</Typography>
+                    <form onSubmit={handleSubmitNewPassword}>
+                        <TextField
+                            label="Password"
+                            type="password"
+                            name="code"
+                            value={newPassword.code}
+                            onChange={handleNewPassword}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <Button variant="contained" type="submit" fullWidth>
+                            Submit
+                        </Button>
                     </form>
                 </Container>
             )}

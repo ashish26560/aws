@@ -13,6 +13,7 @@ import { IUserContext } from './models/user-context';
 import HomePage from './pages/home/homePage';
 import Layout from './layout';
 import ForgotPassword from './pages/authentication/forgotPassword';
+import CreateUser from './pages/admin/createUser';
 
 export default function App() {
     const { setContextUser } = useContext(UserContext) as IUserContext;
@@ -57,6 +58,7 @@ export default function App() {
                     <Route path="/verify-email" element={<VerifyEmail />} />
                     <Route path="/setUpTOTP" element={<SetupTOTP />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/create-user" element={<CreateUser />} />
                 </Routes>
             </Router>
             <ToastContainer />

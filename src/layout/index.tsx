@@ -60,9 +60,9 @@ export default function Layout({ children }: ILayoutProps) {
                                 </>
                             ) : (
                                 <>
-                                    <Button color="inherit" onClick={() => navigate('/create-user')}>
+                                    {/* <Button color="inherit" onClick={() => navigate('/create-user')}>
                                         Create user as admin
-                                    </Button>
+                                    </Button> */}
                                     <Button color="inherit" onClick={() => navigate('/sign-up')}>
                                         Sign up
                                     </Button>

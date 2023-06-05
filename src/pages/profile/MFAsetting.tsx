@@ -20,7 +20,11 @@ const MFAsetting: React.FC = () => {
         await Auth.getPreferredMFA(contextUser, { bypassCache: true })
             .then((MFA) => {
                 console.log('MFA', MFA);
-                MFA === 'SOFTWARE_TOKEN_MFA' && setIsMFAEnabled(true);
+                if (MFA === 'SOFTWARE_TOKEN_MFA') {
+                    setIsMFAEnabled(true);
+                } else {
+                    setIsMFAEnabled(false);
+                }
             })
             .catch((e) => {
                 toast.error(e.message);

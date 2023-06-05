@@ -13,7 +13,7 @@ import HomePage from './pages/home/homePage';
 import Layout from './layout';
 import ForgotPassword from './pages/authentication/forgotPassword';
 import CreateUser from './pages/admin/createUser';
-// import SetupTOTP from './pages/authentication/setupToTp';
+import SetupTOTP from './pages/authentication/setupToTp';
 
 export default function App() {
     const { setContextUser } = useContext(UserContext) as IUserContext;
@@ -56,7 +56,7 @@ export default function App() {
                     <Route path="/sign-in" element={<SignIn />} />
                     <Route path="/sign-up" element={<SignUp />} />
                     <Route path="/verify-email" element={<VerifyEmail />} />
-                    {/* <Route path="/setUpTOTP" element={<SetupTOTP />} /> */}
+                    <Route path="/setUpTOTP" element={<SetupTOTP />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/create-user" element={<CreateUser />} />
                 </Routes>

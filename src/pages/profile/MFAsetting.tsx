@@ -4,6 +4,7 @@ import { UserContext } from '../../context/user-context/userContext';
 import { IUserContext } from '../../models/user-context';
 import { Auth } from 'aws-amplify';
 import { toast } from 'react-toastify';
+import SetupTOTP from '../authentication/setupToTp';
 
 const MFAsetting: React.FC = () => {
     const { contextUser } = useContext(UserContext) as IUserContext;
@@ -64,7 +65,7 @@ const MFAsetting: React.FC = () => {
                     Configure MFA
                 </Button>
             </Grid>
-            {showConfigureMFA ? null : null}
+            {showConfigureMFA ? <SetupTOTP /> : null}
         </Grid>
     );
 };

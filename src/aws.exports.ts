@@ -10,7 +10,7 @@ const awsConfig = {
             process.env.REACT_APP_AWS_OAUTH_SCOPE_1,
             process.env.REACT_APP_AWS_OAUTH_SCOPE_2,
             process.env.REACT_APP_AWS_OAUTH_SCOPE_3,
-            // process.env.REACT_APP_AWS_OAUTH_SCOPE_4,
+            process.env.REACT_APP_AWS_OAUTH_SCOPE_4,
         ],
         redirectSignIn: process.env.REACT_APP_AWS_OAUTH_REDIRECT_SIGN_IN,
         redirectSignOut: process.env.REACT_APP_AWS_OAUTH_REDIRECT_SIGN_OUT,

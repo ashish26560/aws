@@ -10,12 +10,11 @@ const awsConfig = {
             process.env.REACT_APP_AWS_OAUTH_SCOPE_1,
             process.env.REACT_APP_AWS_OAUTH_SCOPE_2,
             process.env.REACT_APP_AWS_OAUTH_SCOPE_3,
-            process.env.REACT_APP_AWS_OAUTH_SCOPE_4,
+            // process.env.REACT_APP_AWS_OAUTH_SCOPE_4,
         ],
         redirectSignIn: process.env.REACT_APP_AWS_OAUTH_REDIRECT_SIGN_IN,
         redirectSignOut: process.env.REACT_APP_AWS_OAUTH_REDIRECT_SIGN_OUT,
         responseType: process.env.REACT_APP_AWS_OAUTH_RESPONSE_TYPE,
-        // Update the following properties with your federated provider details
         social_google_client_id: process.env.REACT_APP_AWS_OAUTH_SOCIAL_GOOGLE_CLIENT_ID,
         social_google_client_secret: process.env.REACT_APP_AWS_OAUTH_SOCIAL_GOOGLE_CLIENT_SECRET,
         // social_amazon_client_id: 'YOUR_AMAZON_CLIENT_ID',

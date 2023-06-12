@@ -16,7 +16,7 @@ import CreateUser from './pages/admin/createUser';
 import SetupTOTP from './pages/authentication/setupToTp';
 
 export default function App() {
-    const { setContextUser } = useContext(UserContext) as IUserContext;
+    const { setContextUser, contextUser } = useContext(UserContext) as IUserContext;
 
     useEffect(() => {
         function listenToAutoSignInEvent() {
@@ -35,6 +35,8 @@ export default function App() {
         }
         listenToAutoSignInEvent();
     }, []);
+
+    console.log(contextUser);
 
     return (
         <>

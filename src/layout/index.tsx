@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/user-context/userContext';
 import { IUserContext } from '../models/user-context';
 import { Auth } from 'aws-amplify';
+import axios from 'axios';
 
 interface ILayoutProps {
     children?: React.ReactNode;
@@ -26,6 +27,27 @@ export default function Layout({ children }: ILayoutProps) {
         } catch (error) {
             console.log('error signing out: ', error);
         }
+    }
+    async function apiEndPoint() {
+        axios
+            .get('https://p5dha7jbhl.execute-api.us-east-1.amazonaws.com/Prod/GetPallet/2', {
+                headers: {
+                    'content-type': 'application/json',
+                    Authorization: (contextUser as any)?.signInUserSession.accessToken.jwtToken,
+                },
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+        // axios
+        //     .post('https://p5dha7jbhl.execute-api.us-east-1.amazonaws.com/Prod/GetPallet/PlacePallet', {
+        //         Size: { Height: 11, Width: 22, Length: 33 },
+        //         Weight: 33,
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
     }
 
     return (
@@ -56,6 +78,10 @@ export default function Layout({ children }: ILayoutProps) {
                                     </Button>
                                     <Button color="inherit" onClick={() => signOut()}>
                                         Sign Out
+                                    </Button>
+
+                                    <Button color="inherit" onClick={apiEndPoint}>
+                                        Call api
                                     </Button>
                                 </>
                             ) : (
